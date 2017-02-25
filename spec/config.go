@@ -15,7 +15,7 @@ const (
 
 // Config encapsulates a specification of .gitignore entries and their sources.
 // It includes a list of custom strings that can be used as additional .gitignore patterns.
-// The schema is versioned to enable foward and backward compatibility.
+// The schema is versioned to enable forward and backward compatibility.
 type Config struct {
 	Sources       Sources  `yaml:"sources"`
 	Custom        []string `yaml:"custom"`
