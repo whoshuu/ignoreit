@@ -1,0 +1,5 @@
+package: github.com/whoshuu/ignoreit
+import:
+- package: github.com/urfave/cli
+  version: ~1.19.1
+- package: gopkg.in/yaml.v2
