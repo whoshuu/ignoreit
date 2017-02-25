@@ -1,0 +1,7 @@
+sources:
+- repo: github/gitignore
+  branch: master
+  entries:
+  - Go
+custom: []
+schema_version: 1
