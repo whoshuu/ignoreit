@@ -15,4 +15,7 @@ matrix:
   - go: master
 
 script:
-- go test -race `go list ./... | grep -v vendor`
+- ./go.test.sh
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
