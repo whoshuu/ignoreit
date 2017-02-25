@@ -167,36 +167,41 @@ func TestLoadConfigExistingFilename(t *testing.T) {
 
 	expectedCustomPatterns := []string{".custompattern", ".anothercustompattern"}
 
-	actualSource := config.Sources[0]
-	if actualSource.Repo != repoName || actualSource.Branch != "ghfw" {
-		t.Errorf("Source should be repo: %s, branch: %s, got repo: %s, branch: %s instead", repoName, "ghfw", actualSource.Repo, actualSource.Branch)
+	expectedValues := []struct {
+		i       uint
+		repo    string
+		branch  string
+		entries []string
+	}{
+		{
+			0,
+			repoName,
+			"ghfw",
+			[]string{"Ada", "Python"},
+		},
+		{
+			1,
+			repoName,
+			branchName,
+			[]string{"C++", "CMake", "Go"},
+		},
 	}
 
-	expectedEntries := []string{"Ada", "Python"}
-
-	if len(actualSource.Entries) != len(expectedEntries) {
-		t.Errorf("Length of Source Entries should be %d, got %d instead", len(expectedEntries), len(actualSource.Entries))
-	}
-	for i := range actualSource.Entries {
-		if actualSource.Entries[i] != expectedEntries[i] {
-			t.Errorf("Source should have %s at index %d, got %s instead", expectedEntries[i], i, actualSource.Entries[i])
+	for _, expectedValue := range expectedValues {
+		actualSource := config.Sources[expectedValue.i]
+		if actualSource.Repo != expectedValue.repo || actualSource.Branch != expectedValue.branch {
+			t.Errorf("Source should be repo: %s, branch: %s, got repo: %s, branch: %s instead", expectedValue.repo, expectedValue.branch, actualSource.Repo, actualSource.Branch)
 		}
-	}
 
-	actualSource = config.Sources[1]
-	if actualSource.Repo != repoName || actualSource.Branch != branchName {
-		t.Errorf("Source should be repo: %s, branch: %s, got repo: %s, branch: %s instead", repoName, branchName, actualSource.Repo, actualSource.Branch)
-	}
-
-	expectedEntries = []string{"C++", "CMake", "Go"}
-
-	if len(actualSource.Entries) != len(expectedEntries) {
-		t.Errorf("Length of Source Entries should be %d, got %d instead", len(expectedEntries), len(actualSource.Entries))
-	}
-	for i := range actualSource.Entries {
-		if actualSource.Entries[i] != expectedEntries[i] {
-			t.Errorf("Source should have %s at index %d, got %s instead", expectedEntries[i], i, actualSource.Entries[i])
+		if len(actualSource.Entries) != len(expectedValue.entries) {
+			t.Errorf("Length of Source Entries should be %d, got %d instead", len(expectedValue.entries), len(actualSource.Entries))
 		}
+		for i := range actualSource.Entries {
+			if actualSource.Entries[i] != expectedValue.entries[i] {
+				t.Errorf("Source should have %s at index %d, got %s instead", expectedValue.entries[i], i, actualSource.Entries[i])
+			}
+		}
+
 	}
 
 	if len(config.Custom) != len(expectedCustomPatterns) {
